@@ -1,0 +1,43 @@
+# Secrets and local configuration
+.env
+.env.*
+!.env.example
+backend/.env
+
+# Python
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.venv/
+venv/
+
+# Node
+node_modules/
+frontend/node_modules/
+frontend/dist/
+
+# Generated application data
+backend/media/
+backend/logs/
+backend/dist/
+*.log
+
+# Built binaries and large generated media
+*.exe
+*.mp3
+*.wav
+*.mp4
+*.sfk
+
+# Local tooling
+.codex-npm-cache/
+.codex-pdf-reader/
+.project-git/
+.agent/
+.agents/
+.claude/
+.vscode/
+
+# OS files
+Thumbs.db
+Desktop.ini

@@ -1,0 +1,13 @@
+@echo off
+echo Starting AI Video Localization Platform...
+
+echo Starting Backend Server (Port 8000)...
+start "Backend API" cmd /k "cd backend && uvicorn main:app --reload --host 0.0.0.0 --port 8000"
+
+echo Starting Frontend Client...
+start "Frontend UI" cmd /k "cd frontend && npm run dev"
+
+echo Application launching...
+echo Backend: http://localhost:8000/docs
+echo Frontend: http://localhost:5173
+pause

@@ -1,0 +1,267 @@
+{
+  "language_code": "eng",
+  "language_probability": 0.9632098078727722,
+  "text": "Hello from Edge TTS. This is a completely free and unlimited alternative to ElevenLabs. The fallback is working perfectly.",
+  "words": [
+    {
+      "text": "Hello",
+      "start": 0.219,
+      "end": 0.519,
+      "type": "word",
+      "logprob": -0.00012861855793744326
+    },
+    {
+      "text": " ",
+      "start": 0.519,
+      "end": 0.679,
+      "type": "spacing",
+      "logprob": -5.125868119648658e-05
+    },
+    {
+      "text": "from",
+      "start": 0.68,
+      "end": 0.779,
+      "type": "word",
+      "logprob": -5.125868119648658e-05
+    },
+    {
+      "text": " ",
+      "start": 0.779,
+      "end": 0.879,
+      "type": "spacing",
+      "logprob": -0.002258847001940012
+    },
+    {
+      "text": "Edge",
+      "start": 0.879,
+      "end": 1.1,
+      "type": "word",
+      "logprob": -0.002258847001940012
+    },
+    {
+      "text": " ",
+      "start": 1.1,
+      "end": 1.22,
+      "type": "spacing",
+      "logprob": -0.0001821352052502334
+    },
+    {
+      "text": "TTS.",
+      "start": 1.22,
+      "end": 1.86,
+      "type": "word",
+      "logprob": -0.0001023646673274925
+    },
+    {
+      "text": " ",
+      "start": 1.86,
+      "end": 1.86,
+      "type": "spacing",
+      "logprob": -2.264974000354414e-06
+    },
+    {
+      "text": "This",
+      "start": 2.919,
+      "end": 3.059,
+      "type": "word",
+      "logprob": -2.264974000354414e-06
+    },
+    {
+      "text": " ",
+      "start": 3.059,
+      "end": 3.099,
+      "type": "spacing",
+      "logprob": -6.747018051100895e-05
+    },
+    {
+      "text": "is",
+      "start": 3.099,
+      "end": 3.179,
+      "type": "word",
+      "logprob": -6.747018051100895e-05
+    },
+    {
+      "text": " ",
+      "start": 3.179,
+      "end": 3.279,
+      "type": "spacing",
+      "logprob": -1.5497195136049413e-06
+    },
+    {
+      "text": "a",
+      "start": 3.279,
+      "end": 3.299,
+      "type": "word",
+      "logprob": -1.5497195136049413e-06
+    },
+    {
+      "text": " ",
+      "start": 3.299,
+      "end": 3.299,
+      "type": "spacing",
+      "logprob": -9.775113539944869e-06
+    },
+    {
+      "text": "completely",
+      "start": 3.299,
+      "end": 3.799,
+      "type": "word",
+      "logprob": -9.775113539944869e-06
+    },
+    {
+      "text": " ",
+      "start": 3.799,
+      "end": 3.959,
+      "type": "spacing",
+      "logprob": -9.42901024245657e-05
+    },
+    {
+      "text": "free",
+      "start": 3.959,
+      "end": 4.279,
+      "type": "word",
+      "logprob": -9.42901024245657e-05
+    },
+    {
+      "text": " ",
+      "start": 4.279,
+      "end": 4.319,
+      "type": "spacing",
+      "logprob": -6.925819616299123e-05
+    },
+    {
+      "text": "and",
+      "start": 4.319,
+      "end": 4.5,
+      "type": "word",
+      "logprob": -6.925819616299123e-05
+    },
+    {
+      "text": " ",
+      "start": 4.5,
+      "end": 4.539,
+      "type": "spacing",
+      "logprob": -9.738924563862383e-05
+    },
+    {
+      "text": "unlimited",
+      "start": 4.539,
+      "end": 5.039,
+      "type": "word",
+      "logprob": -9.738924563862383e-05
+    },
+    {
+      "text": " ",
+      "start": 5.039,
+      "end": 5.099,
+      "type": "spacing",
+      "logprob": -2.455681169521995e-05
+    },
+    {
+      "text": "alternative",
+      "start": 5.099,
+      "end": 5.699,
+      "type": "word",
+      "logprob": -2.455681169521995e-05
+    },
+    {
+      "text": " ",
+      "start": 5.699,
+      "end": 5.739,
+      "type": "spacing",
+      "logprob": -6.83045873302035e-05
+    },
+    {
+      "text": "to",
+      "start": 5.739,
+      "end": 5.819,
+      "type": "word",
+      "logprob": -6.83045873302035e-05
+    },
+    {
+      "text": " ",
+      "start": 5.819,
+      "end": 5.939,
+      "type": "spacing",
+      "logprob": -0.0014938872773200274
+    },
+    {
+      "text": "ElevenLabs.",
+      "start": 5.94,
+      "end": 6.679,
+      "type": "word",
+      "logprob": -0.024750078380086714
+    },
+    {
+      "text": " ",
+      "start": 6.679,
+      "end": 7.679,
+      "type": "spacing",
+      "logprob": -9.905801562126726e-05
+    },
+    {
+      "text": "The",
+      "start": 7.679,
+      "end": 7.719,
+      "type": "word",
+      "logprob": -9.905801562126726e-05
+    },
+    {
+      "text": " ",
+      "start": 7.719,
+      "end": 7.839,
+      "type": "spacing",
+      "logprob": -0.0015310243470594287
+    },
+    {
+      "text": "fallback",
+      "start": 7.839,
+      "end": 8.319,
+      "type": "word",
+      "logprob": -0.0015310243470594287
+    },
+    {
+      "text": " ",
+      "start": 8.319,
+      "end": 8.38,
+      "type": "spacing",
+      "logprob": 0.0
+    },
+    {
+      "text": "is",
+      "start": 8.38,
+      "end": 8.52,
+      "type": "word",
+      "logprob": 0.0
+    },
+    {
+      "text": " ",
+      "start": 8.52,
+      "end": 8.539,
+      "type": "spacing",
+      "logprob": -1.9073468138230965e-06
+    },
+    {
+      "text": "working",
+      "start": 8.539,
+      "end": 8.9,
+      "type": "word",
+      "logprob": -1.9073468138230965e-06
+    },
+    {
+      "text": " ",
+      "start": 8.9,
+      "end": 8.92,
+      "type": "spacing",
+      "logprob": -1.9311717551317997e-05
+    },
+    {
+      "text": "perfectly.",
+      "start": 8.92,
+      "end": 9.46,
+      "type": "word",
+      "logprob": -7.433444279740798e-05
+    }
+  ],
+  "transcription_id": "4gs08RFJNpJ7uCB8CmNc"
+}
