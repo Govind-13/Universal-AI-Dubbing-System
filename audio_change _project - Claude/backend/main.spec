@@ -8,6 +8,7 @@ a = Analysis(
     binaries=[],
     datas=[
         ('../frontend/dist', 'frontend_dist'),  # bundled React UI
+        ('assets/haarcascade_frontalface_default.xml', 'assets'),
     ],
     hiddenimports=[
         # Uvicorn internals

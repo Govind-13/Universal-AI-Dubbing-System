@@ -27,6 +27,25 @@ def _probe_media_duration(media_path: Path, ffmpeg_exe: str) -> float:
     return int(hours) * 3600 + int(minutes) * 60 + float(seconds)
 
 
+def _probe_video_fps(media_path: Path, ffmpeg_exe: str) -> float:
+    """Read the source video's frame rate so speed-adjusted output can be
+    remuxed to a constant frame rate (avoids non-monotonic DTS after concat)."""
+    result = subprocess.run(
+        [ffmpeg_exe, "-hide_banner", "-i", str(media_path)],
+        capture_output=True,
+        text=True,
+        encoding="utf-8",
+        errors="replace",
+        timeout=30,
+    )
+    match = re.search(r",\s*([\d.]+)\s*fps", result.stderr)
+    if match:
+        fps = float(match.group(1))
+        if fps > 0:
+            return fps
+    return 25.0
+
+
 def extract_audio(video_path: str, output_dir: str) -> str:
     """
     Extracts audio from a video file using FFmpeg (direct subprocess call).
@@ -77,9 +96,14 @@ def extract_audio(video_path: str, output_dir: str) -> str:
         print(f"General Error during audio extraction: {e}")
         raise RuntimeError(f"Audio extraction failed: {str(e)}")
 
-def _build_freeze_filter(freeze_regions: list[dict]) -> str:
+def _build_freeze_filter(freeze_regions: list[dict], fps: float) -> str:
     """Build FFmpeg filter_complex that splits video at each freeze point,
-    clones the last frame for the overflow duration, then concatenates."""
+    clones the last frame for the overflow duration, then concatenates.
+
+    Concatenating many trimmed segments from a variable-frame-rate source can
+    leave tiny PTS gaps at boundaries; forcing a constant frame rate on the
+    concatenated output keeps DTS strictly monotonic.
+    """
     regions = sorted(freeze_regions, key=lambda r: r["video_time_sec"])
     filter_parts = []
     concat_inputs = []
@@ -96,7 +120,7 @@ def _build_freeze_filter(freeze_regions: list[dict]) -> str:
         # Freeze: grab one frame at the freeze point, clone it for overflow duration
         filter_parts.append(
             f"[0:v]trim=start={vt:.3f}:end={vt + 0.04:.3f},"
-            f"setpts=PTS-STARTPTS,tpad=stop_mode=clone:stop_duration={dur:.3f}[frz{idx}]"
+            f"setpts=PTS-STARTPTS,tpad=stop_mode=clone:stop_duration={dur:.3f},trim=duration={dur:.3f}[frz{idx}]"
         )
         concat_inputs.append(f"[seg{idx}][frz{idx}]")
 
@@ -109,7 +133,7 @@ def _build_freeze_filter(freeze_regions: list[dict]) -> str:
 
     n_parts = len(regions) * 2 + 1
     fc = "; ".join(filter_parts)
-    fc += f"; {''.join(concat_inputs)}concat=n={n_parts}:v=1:a=0[outv]"
+    fc += f"; {''.join(concat_inputs)}concat=n={n_parts}:v=1:a=0,fps={fps:.3f},setpts=PTS-STARTPTS[outv]"
     return fc
 
 
@@ -132,7 +156,8 @@ def merge_audio_video(video_path: str, audio_path: str, output_path: str,
     temp_output_path.unlink(missing_ok=True)
 
     if freeze_regions:
-        filter_complex = _build_freeze_filter(freeze_regions)
+        fps = _probe_video_fps(video_path, ffmpeg_exe)
+        filter_complex = _build_freeze_filter(freeze_regions, fps)
         cmd = [
             ffmpeg_exe,
             "-hide_banner",
@@ -146,10 +171,13 @@ def merge_audio_video(video_path: str, audio_path: str, output_path: str,
             "-c:v", "libx264",
             "-preset", "fast",
             "-crf", "20",
+            "-vsync", "cfr",
+            "-r", f"{fps:.3f}",
             "-c:a", "aac",
             "-b:a", "192k",
             "-movflags", "+faststart",
-            "-shortest",
+            "-af", "apad",
+            "-t", f"{video_duration + sum(r['duration_sec'] for r in freeze_regions):.3f}",
             "-y",
             str(temp_output_path),
         ]

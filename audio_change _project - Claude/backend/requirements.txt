@@ -25,6 +25,7 @@ requests==2.32.5
 pydub==0.25.1
 imageio-ffmpeg==0.6.0
 ffmpeg-python
+demucs==4.1.0
 
 # Utilities
 pypdf==6.10.2

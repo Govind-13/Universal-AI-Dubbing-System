@@ -2,6 +2,8 @@
 import os
 from pathlib import Path
 
+from services.transcript_cleanup_service import clean_srt_content
+
 def format_timestamp(seconds: float) -> str:
     """
     Converts seconds (float) to SRT timestamp format (HH:MM:SS,mmm).
@@ -31,7 +33,7 @@ def build_srt_content(segments: list) -> str:
     if not blocks:
         return ""
 
-    return "\n\n".join(blocks) + "\n"
+    return clean_srt_content("\n\n".join(blocks) + "\n")
 
 
 def retime_segments(segments: list, freeze_regions: list[dict]) -> list:

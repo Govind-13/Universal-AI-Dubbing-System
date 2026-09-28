@@ -177,13 +177,85 @@ def _segments_from_words(words_list: list[dict]) -> list[dict]:
     return segments
 
 
+def _segments_from_full_stops(words: list[dict]) -> list[dict]:
+    """Regroup a flat, chronologically-ordered list of normalized words into
+    sentence segments split ONLY at a literal sentence-ending full stop ('.').
+    Never splits on '!', '?', word count, or duration. Contiguous leading/
+    trailing audio-event-tagged words are stripped first (before grouping),
+    so a marker like "[on-hold music]" never gets glued onto the first or
+    last real sentence. Any trailing words with no closing '.' are still
+    flushed as a final segment so content is never silently dropped."""
+    if not words:
+        return []
+
+    start_index = 0
+    end_index = len(words)
+    while start_index < end_index and words[start_index].get("type") == "audio_event":
+        start_index += 1
+    while end_index > start_index and words[end_index - 1].get("type") == "audio_event":
+        end_index -= 1
+    speech_words = words[start_index:end_index]
+    if not speech_words:
+        return []
+
+    segments = []
+    current: list[dict] = []
+
+    def flush() -> None:
+        if not current:
+            return
+        text = "".join(str(w.get("text", "")) for w in current).strip()
+        if not text:
+            current.clear()
+            return
+        starts = [w.get("start_time") for w in current if w.get("start_time") is not None]
+        ends = [w.get("end_time") for w in current if w.get("end_time") is not None]
+        segment = {
+            "id": len(segments) + 1,
+            "start": starts[0] if starts else 0.0,
+            "end": ends[-1] if ends else (starts[0] if starts else 0.0),
+            "text": text,
+            "words": list(current),
+        }
+        speaker = _speaker_from_items(current)
+        if speaker:
+            segment["speaker"] = speaker
+        segments.append(segment)
+        current.clear()
+
+    for word in speech_words:
+        current.append(word)
+        stripped_text = str(word.get("text", "")).strip()
+        if stripped_text.endswith("."):
+            flush()
+
+    flush()  # any trailing words with no closing '.' are still preserved
+    return segments
+
+
 def normalize_stt_result(raw_result: dict, provider: str) -> dict:
-    """Return one lossless, provider-independent STT result schema."""
+    """Return one lossless, provider-independent STT result schema.
+
+    Segmentation is always finalized by regrouping every word across
+    whichever upstream segments were built (regardless of provider/path)
+    at literal sentence-ending full stops only — the single segmentation
+    source of truth for the whole pipeline. See _segments_from_full_stops.
+    """
     raw_segments = raw_result.get("segments") or []
     if raw_segments:
         segments = _normalize_existing_segments(raw_segments)
     else:
         segments = _segments_from_words(raw_result.get("words") or [])
+
+    all_words = []
+    for segment in segments:
+        segment_speaker_id = (segment.get("speaker") or {}).get("id")
+        for word in segment.get("words", []):
+            if segment_speaker_id and not word.get("speaker_id"):
+                word = {**word, "speaker_id": segment_speaker_id}
+            all_words.append(word)
+    if all_words:
+        segments = _segments_from_full_stops(all_words)
 
     text = str(raw_result.get("text") or "").strip()
     if not text:

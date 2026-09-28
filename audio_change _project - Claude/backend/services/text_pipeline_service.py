@@ -364,16 +364,12 @@ class TextPipelineService:
                 )
                 continue
 
-            protected_source, _ = _protect_text(
-                source_segment.get("text", ""),
-                self.config.glossary_terms,
-                prefer_target=False,
-            )
-            protected_candidate, replacements = _protect_text(
-                candidate_segment.get("text", ""),
-                self.config.glossary_terms,
-                prefer_target=True,
-            )
+            # The reviewer must see actual terms to judge meaning. Independently
+            # numbered source/candidate placeholders can also refer to different
+            # words, particularly when the translation reordered or omitted terms.
+            protected_source = source_segment.get("text", "")
+            protected_candidate = candidate_segment.get("text", "")
+            replacements = {}
             try:
                 if use_fallback_for_remaining and fallback_handler:
                     reviewed_text = await fallback_handler(protected_source, protected_candidate)
@@ -389,9 +385,17 @@ class TextPipelineService:
                 )
                 if fallback_handler:
                     use_fallback_for_remaining = True
-                    reviewed_text = await fallback_handler(protected_source, protected_candidate)
+                    try:
+                        reviewed_text = await fallback_handler(protected_source, protected_candidate)
+                    except Exception as fallback_exc:
+                        logger.warning("Review fallback failed: %s", fallback_exc)
+                        reviewed_text = candidate_segment.get("text", "")
                 else:
                     reviewed_text = candidate_segment.get("text", "")
+
+            if not _has_processable_text(reviewed_text):
+                fallback_used = True
+                reviewed_text = candidate_segment.get("text", "")
 
             reviewed_segments.append(
                 {

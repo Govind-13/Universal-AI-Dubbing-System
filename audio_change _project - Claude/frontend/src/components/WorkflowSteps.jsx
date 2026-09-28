@@ -30,12 +30,12 @@ function WorkflowSteps({ steps, status, hasFile, hasResult }) {
             </div>
             <div className="min-w-0">
               <div className="flex items-center gap-3">
-                <p className="text-sm font-semibold text-white">{step.label}</p>
+                <p className="text-sm font-semibold text-brand-text">{step.label}</p>
                 <span className="workflow-step-state">
                   {state === 'complete' ? 'Done' : state === 'current' ? 'Active' : 'Next'}
                 </span>
               </div>
-              <p className="mt-2 text-sm leading-6 text-slate-300">{step.description}</p>
+              <p className="mt-2 text-sm leading-6 text-brand-muted">{step.description}</p>
             </div>
           </li>
         )

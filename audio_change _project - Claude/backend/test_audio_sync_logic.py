@@ -16,12 +16,12 @@ def test_fit_audio_to_duration_pads_short_audio():
     assert len(fitted) == 1000
 
 
-def test_fit_audio_to_duration_trims_or_speeds_long_audio():
+def test_fit_audio_to_duration_preserves_long_speech():
     audio = AudioSegment.silent(duration=1800)
 
     fitted = _fit_audio_to_duration(audio, 900)
 
-    assert len(fitted) == 900
+    assert len(fitted) == 1800
 
 
 def test_fit_audio_to_duration_handles_empty_audio():

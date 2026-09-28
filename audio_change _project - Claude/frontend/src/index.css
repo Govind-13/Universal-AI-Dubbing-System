@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,600&family=Figtree:wght@400;500;600;700&family=Noto+Sans+Tamil:wght@500&family=Noto+Sans+Devanagari:wght@500&family=Noto+Sans+Telugu:wght@500&family=Noto+Sans+Kannada:wght@500&family=Noto+Sans+Malayalam:wght@500&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -6,231 +6,64 @@
 
 @layer base {
   :root {
-    font-family: 'Inter', sans-serif;
-    color: #ffffff;
-    background-color: #121212;
+    font-family: Figtree, system-ui, sans-serif;
+    color: #1d1a2b;
+    background-color: #f6f5f2;
   }
-
   * { @apply box-border; }
-  html { @apply scroll-smooth; }
-  body { @apply m-0 min-h-screen bg-brand-dark text-brand-text antialiased selection:bg-brand-gold selection:text-black; }
-  #root { @apply min-h-screen flex flex-col; }
+  body { @apply m-0 min-h-screen bg-paper text-ink antialiased; }
+  #root { @apply min-h-screen; }
+  a { @apply text-accent-ink no-underline hover:text-[#36229A]; }
+  select, textarea, input, button { font-family: inherit; }
+  input[type='range'] { accent-color: #5a3fd1; }
 }
 
 @layer components {
   .btn-primary {
-    @apply inline-flex items-center justify-center gap-2 rounded-lg bg-brand-gold px-6 py-3 text-sm font-bold text-black shadow-lg shadow-brand-gold/20 transition-all duration-300 hover:scale-105 hover:bg-brand-gold-hover disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:scale-100;
+    @apply inline-flex h-11 items-center justify-center gap-2 rounded-[10px] border-0 bg-accent px-5 text-[15px] font-semibold text-white transition-colors hover:bg-accent-ink hover:text-white disabled:cursor-not-allowed disabled:opacity-45 disabled:hover:bg-accent;
   }
-
   .btn-secondary {
-    @apply inline-flex items-center justify-center gap-2 rounded-lg border-2 border-brand-gold bg-transparent px-6 py-3 text-sm font-bold text-brand-text transition-all duration-300 hover:scale-105 hover:bg-brand-gold/10 disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:scale-100;
+    @apply inline-flex h-11 items-center justify-center gap-2 rounded-[10px] border border-line-strong bg-white px-4 text-[15px] font-semibold text-ink transition-colors hover:bg-paper hover:text-ink disabled:cursor-not-allowed disabled:opacity-50;
+  }
+  .btn-soft {
+    @apply inline-flex h-11 items-center justify-center gap-2 rounded-[10px] border border-accent-line bg-accent-tint px-[18px] text-[15px] font-semibold text-accent-ink transition-colors hover:bg-accent-soft disabled:cursor-not-allowed disabled:opacity-50;
   }
 
-  .btn-ghost {
-    @apply inline-flex items-center gap-2 rounded-lg border border-transparent px-4 py-3 text-sm font-medium text-brand-muted transition duration-200 hover:bg-white/5 hover:text-white disabled:cursor-not-allowed disabled:opacity-60;
+  .card { @apply flex flex-col overflow-hidden rounded-2xl border border-line bg-white; }
+  .card-head {
+    @apply flex h-[60px] items-center justify-between border-b border-divider px-5;
+  }
+  .card-title { @apply flex items-center gap-2.5 text-base font-semibold text-ink; }
+
+  .kicker { @apply text-xs font-bold uppercase tracking-[0.16em] text-accent; }
+  .display-title { @apply m-0 font-display text-[44px] font-semibold leading-[1.05] tracking-[-0.025em] text-ink; }
+
+  .field { @apply flex flex-col gap-1.5 text-[13px] font-medium text-ink-2; }
+  .field-control {
+    @apply h-11 w-full rounded-[10px] border border-line-strong bg-white px-3 text-[15px] text-ink outline-none focus:border-accent focus:ring-2 focus:ring-accent/20 disabled:opacity-60;
   }
 
-  .surface-panel {
-    @apply relative overflow-hidden rounded-xl bg-brand-card shadow-panel border border-white/5;
+  .segmented { @apply flex rounded-[10px] bg-[#F3F1F6] p-[3px]; }
+  .segmented-option {
+    @apply h-8 rounded-lg border-0 bg-transparent px-3.5 text-[13px] font-medium text-muted transition disabled:cursor-not-allowed disabled:opacity-60;
   }
+  .segmented-option-active { @apply bg-white font-semibold text-ink shadow-seg; }
 
-  .section-panel {
-    @apply p-6 sm:p-8;
+  .switch {
+    @apply flex h-7 w-[46px] flex-none cursor-pointer items-center rounded-full border-0 bg-[#CFCAD8] p-[3px] transition-colors disabled:cursor-not-allowed disabled:opacity-50;
   }
+  .switch > span { @apply h-[22px] w-[22px] rounded-full bg-white shadow-seg transition-transform; }
+  .switch[aria-checked='true'] { @apply bg-accent; }
+  .switch[aria-checked='true'] > span { transform: translateX(18px); }
 
-  .section-heading {
-    @apply flex flex-col gap-3 border-b border-brand-card pb-6 lg:flex-row lg:items-center lg:justify-between;
+  .badge { @apply inline-flex h-[30px] items-center gap-2 rounded-lg px-3 text-[13px] font-semibold; }
+
+  .spinner {
+    @apply h-7 w-7 flex-none rounded-full border-[3px] border-[#D5CCF7];
+    border-top-color: #5a3fd1;
+    animation: spin 0.9s linear infinite;
   }
-
-  .section-kicker {
-    @apply text-xs font-bold uppercase tracking-widest text-brand-gold;
-  }
-
-  .section-title {
-    @apply mt-1 text-2xl font-bold tracking-tight text-white sm:text-3xl;
-  }
-
-  .section-chip {
-    @apply inline-flex items-center rounded-full border border-brand-gold/30 bg-brand-gold/10 px-3 py-1.5 text-xs font-semibold uppercase tracking-wider text-brand-gold;
-  }
-
-  .section-chip-success {
-    @apply border-brand-green/30 bg-brand-green/10 text-brand-green;
-  }
-
-  .subtle-card {
-    @apply rounded-xl bg-brand-gray border border-white/5 p-5 shadow-soft hover:border-brand-gold/30 transition-colors duration-300;
-  }
-
-  .feature-tile {
-    @apply rounded-xl bg-brand-gray border border-white/5 p-5 shadow-soft;
-  }
-
-  .feature-icon {
-    @apply flex h-12 w-12 items-center justify-center rounded-lg border border-brand-gold/20 bg-brand-gold/10 text-brand-gold;
-  }
-
-  .icon-badge {
-    @apply flex h-11 w-11 items-center justify-center rounded-lg bg-brand-gray text-brand-gold;
-  }
-
-  .field-label {
-    @apply mb-2 block text-sm font-semibold text-brand-text;
-  }
-
-  .app-input {
-    @apply w-full rounded-lg border border-white/10 bg-brand-dark px-4 py-3.5 text-sm text-white outline-none transition duration-200 focus:border-brand-gold focus:ring-1 focus:ring-brand-gold;
-  }
-
-  .upload-zone {
-    @apply rounded-xl border-2 border-dashed border-brand-muted/30 bg-brand-dark p-8 transition duration-300 sm:p-10;
-  }
-
-  .upload-zone-filled {
-    @apply border-solid border-brand-gold/30;
-  }
-
-  .upload-zone-dragging {
-    @apply border-brand-gold bg-brand-card;
-  }
-
-  .upload-zone-disabled {
-    @apply opacity-70;
-  }
-
-  .upload-zone-icon {
-    @apply flex h-20 w-20 items-center justify-center rounded-full bg-brand-gray border border-brand-gold/20 text-brand-gold shadow-[0_0_15px_rgba(242,193,102,0.2)];
-  }
-
-  .progress-track {
-    @apply h-2 overflow-hidden rounded-full bg-black/40;
-  }
-
-  .progress-fill {
-    @apply h-full rounded-full bg-brand-gold transition-all duration-500 shadow-[0_0_10px_rgba(242,193,102,0.5)];
-  }
-
-  .stage-row {
-    @apply flex gap-4 rounded-lg border p-4 transition duration-200;
-  }
-
-  .stage-row-complete {
-    @apply border-brand-green/30 bg-brand-green/10;
-  }
-
-  .stage-row-current {
-    @apply border-brand-gold/30 bg-brand-gold/10 shadow-[0_0_15px_rgba(242,193,102,0.1)];
-  }
-
-  .stage-row-upcoming {
-    @apply border-white/5 bg-brand-dark;
-  }
-
-  .stage-icon {
-    @apply mt-0.5 flex h-8 w-8 flex-none items-center justify-center rounded-full border border-white/10 bg-brand-gray text-brand-gold;
-  }
-
-  .workflow-step {
-    @apply flex gap-4 rounded-lg border p-4;
-  }
-
-  .workflow-step-current {
-    @apply border-brand-gold/30 bg-brand-gold/10;
-  }
-
-  .workflow-step-complete {
-    @apply border-brand-green/30 bg-brand-green/10;
-  }
-
-  .workflow-step-upcoming {
-    @apply border-white/5 bg-brand-gray;
-  }
-
-  .workflow-step-marker {
-    @apply flex h-10 w-10 flex-none items-center justify-center rounded-full border border-brand-gold/20 bg-brand-dark text-sm font-bold text-brand-gold;
-  }
-
-  .workflow-step-state {
-    @apply rounded-full border border-brand-gold/20 bg-brand-dark px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-brand-gold;
-  }
-
-  .status-banner {
-    @apply rounded-xl border px-5 py-4 shadow-soft;
-  }
-
-  .status-banner-success {
-    @apply border-brand-green/30 bg-brand-green/10;
-  }
-
-  .status-banner-error {
-    @apply border-red-500/30 bg-red-500/10;
-  }
-
-  .metric-card {
-    @apply rounded-xl border border-white/5 bg-brand-gray p-5 shadow-soft border-l-4 border-l-brand-gold;
-  }
-
-  .metric-label {
-    @apply text-xs font-bold uppercase tracking-wider text-brand-muted;
-  }
-
-  .metric-value {
-    @apply mt-2 text-2xl font-bold text-white;
-  }
-
-  .result-tabs {
-    @apply space-y-5;
-  }
-
-  .result-tab-list {
-    @apply flex flex-wrap gap-2;
-  }
-
-  .result-tab {
-    @apply inline-flex items-center gap-2 rounded-full border border-white/10 bg-brand-gray px-5 py-2.5 text-sm font-bold text-brand-muted transition duration-200 hover:border-brand-gold hover:text-brand-gold;
-  }
-
-  .result-tab-active {
-    @apply border-brand-gold bg-brand-gold text-black hover:text-black;
-  }
-
-  .result-panel {
-    @apply rounded-xl border border-white/5 bg-brand-gray p-5 sm:p-6;
-  }
-
-  .media-card {
-    @apply rounded-xl border border-white/5 bg-brand-dark p-5;
-  }
-
-  .timeline-track {
-    @apply relative h-14 overflow-hidden rounded-lg border border-white/10 bg-brand-dark;
-  }
-
-  .timeline-segment {
-    @apply absolute top-2 h-10 rounded-md bg-brand-gold/80 shadow-[0_0_8px_rgba(242,193,102,0.4)];
-  }
-
-  .segment-list {
-    @apply max-h-[30rem] space-y-3 overflow-y-auto pr-1;
-  }
-
-  .segment-row {
-    @apply flex flex-col gap-3 rounded-xl border border-white/5 bg-brand-dark p-4 lg:flex-row hover:border-brand-gold/30 transition-colors;
-  }
-
-  .segment-time {
-    @apply min-w-[8rem] text-sm font-bold text-brand-gold;
-  }
-
-  .segment-text {
-    @apply text-sm leading-7 text-white;
-  }
-
-  .empty-results {
-    @apply flex min-h-[22rem] flex-col items-center justify-center rounded-xl border border-dashed border-white/10 bg-brand-dark px-6 py-12;
-  }
-
-  .empty-results-icon {
-    @apply flex h-20 w-20 items-center justify-center rounded-full bg-brand-gray text-brand-gold;
+  @media (prefers-reduced-motion: reduce) {
+    .spinner { animation: none; }
   }
 }

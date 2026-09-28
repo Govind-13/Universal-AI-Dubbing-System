@@ -38,6 +38,10 @@ backend/dist/
 .claude/
 .vscode/
 
+# Local backups and one-off patch bundles (backups contain a copy of backend/.env)
+.fix-backups/
+reliability-fixes/
+
 # OS files
 Thumbs.db
 Desktop.ini
